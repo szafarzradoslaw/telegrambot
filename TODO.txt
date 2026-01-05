@@ -1,1 +1,8 @@
-make regex prasing in prasing_service.py
+make regex prasing in prasing_service.py DONE
+    include mutiple imputs (regex) ex. 150g banana / banana 120g / banana (one)
+simple food macros database DONE
+    including aliasis
+    get a lot of data
+calculating macros based on users input and food macros form database DONE
+    if amount isnt provided asume one portion
+comand to show this days macros consumed

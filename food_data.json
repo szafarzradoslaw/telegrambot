@@ -1,0 +1,20 @@
+{
+    "banana": {
+        "calories_per_100g": 89,
+        "protein_per_100g": 1.1,
+        "fat_per_100g": 0.3,
+        "carbs_per_100g": 22.8
+    },
+    "apple": {
+        "calories_per_100g": 52,
+        "protein_per_100g": 0.3,
+        "fat_per_100g": 0.2,
+        "carbs_per_100g": 14
+    },
+    "orange": {
+        "calories_per_100g": 47,
+        "protein_per_100g": 0.9,
+        "fat_per_100g": 0.1,
+        "carbs_per_100g": 11.8
+    }
+}

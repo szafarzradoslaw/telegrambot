@@ -2,8 +2,7 @@ from typing import Final
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 from parsing_service import food_parsing, print_user_message
-
-
+from food_service import calculate_macros
 BOT_USERNAME: Final = "@szafarzbot"
 
 # TAKING TOKEN
@@ -29,15 +28,18 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = update.message.text
     print_user_message(text)
     parsed = food_parsing(text)
-
     if parsed is None:
         await update.message.reply_text(
             'Wrong format. Please use: "120g banana"'
         )
         return
-    
     amount, unit, food_name = parsed
-    response = f"You have entered: {amount}{unit} of {food_name}"
+    macros = calculate_macros(food_name, amount, unit)
+    response = f"""You have entered: {amount}{unit} of {food_name}.
+    Calories: {macros['calories']},
+    Protein: {macros['protein']},
+    Carbs: {macros['carbs']},
+    Fat: {macros['fat']}"""
     await update.message.reply_text(response)
 
 
