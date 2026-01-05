@@ -1,6 +1,8 @@
 from typing import Final
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
+from parsing_service import food_parsing, print_user_message
+
 
 BOT_USERNAME: Final = "@szafarzbot"
 
@@ -22,24 +24,20 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def customcommand(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("CUSTOM COMMAND")
 
-# COMMAND RESPONSES
-def handle_response(text: str) -> str: 
-    text = text.lower()
-
-    if "hello" in text:
-        return "hello"
-    else:
-        return "no hello"
-    
-# MESSEGE HANDLER
+# MESSAGE HANDLER
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = update.message.text
+    print_user_message(text)
+    parsed = food_parsing(text)
 
-    # 1. Send message to backend (for now: print to terminal)
-    print(f"Received message: {text}")
-
-    # 2. Optional: process or respond
-    response = handle_response(text)
+    if parsed is None:
+        await update.message.reply_text(
+            'Wrong format. Please use: "120g banana"'
+        )
+        return
+    
+    amount, unit, food_name = parsed
+    response = f"You have entered: {amount}{unit} of {food_name}"
     await update.message.reply_text(response)
 
 
