@@ -1,8 +1,8 @@
 from typing import Final
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
-from parsing_service import food_parsing, print_user_message
-from food_service import calculate_macros
+from parsing_service import prarse_food_input
+from food_service import calculate_macros, print_user_message
 BOT_USERNAME: Final = "@szafarzbot"
 
 # TAKING TOKEN
@@ -27,14 +27,22 @@ async def customcommand(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = update.message.text
     print_user_message(text)
-    parsed = food_parsing(text)
+    parsed = prarse_food_input(text)
     if parsed is None:
         await update.message.reply_text(
             'Wrong format. Please use: "120g banana"'
         )
         return
-    amount, unit, food_name = parsed
+    food_name = parsed["food"]
+    amount = parsed["amount"]
+    unit = parsed["unit"]
+
     macros = calculate_macros(food_name, amount, unit)
+    if macros is None:
+        await update.message.reply_text(
+            f"Could not find nutritional information for '{food_name}'."
+        )
+        return 
     response = f"""You have entered: {amount}{unit} of {food_name}.
     Calories: {macros['calories']},
     Protein: {macros['protein']},
