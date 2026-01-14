@@ -37,7 +37,7 @@ def parse_food_input(user_input: str):
             "amount": float(parts[0]),
             "unit": "portion",
         }
-    if len(parts) == 2 and parts[1].isdigit():
+    if len(parts) == 2 and is_number(parts[1]):
         return {
             "food": parts[0],
             "amount": float(parts[1]),
