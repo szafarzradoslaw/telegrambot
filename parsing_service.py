@@ -10,7 +10,12 @@ PATTERN_AMOUNT_UNIT_ENDING = re.compile(
     r"^(?P<food>[a-zA-Z ]+)\s+(?P<amount>\d+(?:[.,]\d+)?)\s*(?P<unit>[a-zA-Z]+)$"
 )
 
-
+def is_number(s: str) -> bool:
+        try:
+            float(s)
+            return True
+        except ValueError:
+            return False
 
 def parse_food_input(user_input: str):
     text = user_input.strip().lower()
@@ -23,9 +28,10 @@ def parse_food_input(user_input: str):
                     "amount": float(match.group("amount")),
                     "unit": match.group("unit"),
                 }
-            
+    
     parts = text.split()
-    if len(parts) == 2 and parts[0].isdigit():
+    
+    if len(parts) == 2 and is_number(parts[0]):
         return {
             "food": parts[1],
             "amount": float(parts[0]),
