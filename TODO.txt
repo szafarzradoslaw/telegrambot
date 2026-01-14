@@ -2,12 +2,14 @@
 [X] include mutiple imputs (regex) ex. 120g banana / banana 120g
 [X] portions
 [X] conver units
-x as unit equivalent to portion
-allow decimal amounts (1,5 or 1.5)
+[X] x as unit equivalent to portion
+[X] allow decimal amounts
+    [X] 1.5
+    [X] 1,5
 
 [X] simple food macros database
 food aliasis
-get a lot of data
+get lots of data
 proper database
 [X] calculating macros based on users input and food macros form database
 [X] if amount isnt provided asume one portion 
@@ -15,7 +17,7 @@ proper database
 comand to sum up todays macros
 adding full meals to memory
 
-provide grams in response instead of the unit that user entered
+[] provide grams in response instead of the unit that user entered
     User: 1 banana
     Bot NOW: You have entered: 1portion of banana
     Bot Intended: You have entered: 70g of banana

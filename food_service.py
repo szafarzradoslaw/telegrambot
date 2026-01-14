@@ -22,6 +22,7 @@ def convert_units_to_grams(amount: float, unit: str, food_name: str) -> float:
         "ml": 1,   # for milk/water
         "l": 1000,
         "portion": food.get("portion_grams", 100),  # default to 100g if not specified
+        "x": food.get("portion_grams", 100)  # same as portion
     }
     if unit not in UNIT_MULTIPLIER:
         print(f"WARNING: Unsupported unit '{unit}'")
@@ -33,12 +34,12 @@ def convert_units_to_grams(amount: float, unit: str, food_name: str) -> float:
 def calculate_macros(food_name: str, amount: float, unit: str):
     food = get_food_macros(food_name)
     if not food:
-        print(f"WARNING:calculate_macros.py - Food '{food_name}' not found")
+        print(f"WARNING:food_service.py - Food '{food_name}' not found")
         return None
     
     grams = convert_units_to_grams(amount, unit, food_name)
     if grams is None:
-        print(f"WARNING:calculate_macros.py - Cannot convert {amount} {unit} of {food_name} to grams")
+        print(f"WARNING:food_service.py - Cannot convert {amount} {unit} of {food_name} to grams")
         return None
     macros = {
         "calories": food["calories_per_100g"] * grams / 100,
