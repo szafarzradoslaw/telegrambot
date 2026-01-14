@@ -1,9 +1,6 @@
 import json
 from pathlib import Path
 
-def print_user_message(text: str) -> None:
-    print(f"[FOOD SERVICE] Received: {text}")
-
 # Load JSON
 DATA_PATH = Path(__file__).parent / "food_data.json"
 with open(DATA_PATH, "r", encoding="utf-8") as f:
@@ -41,7 +38,7 @@ def calculate_macros(food_name: str, amount: float, unit: str):
     
     grams = convert_units_to_grams(amount, unit, food_name)
     if grams is None:
-        print(f"WARNING:calculate_macros.py - Cannot convert {amount} {unit} of '{food_name} to grams'")
+        print(f"WARNING:calculate_macros.py - Cannot convert {amount} {unit} of {food_name} to grams")
         return None
     macros = {
         "calories": food["calories_per_100g"] * grams / 100,

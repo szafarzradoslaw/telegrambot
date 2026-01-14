@@ -1,17 +1,22 @@
+import os
 from typing import Final
+
+from dotenv import load_dotenv
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
+
 from parsing_service import prarse_food_input
-from food_service import calculate_macros, print_user_message
+from food_service import calculate_macros
+
 BOT_USERNAME: Final = "@szafarzbot"
 
-# TAKING TOKEN
-import os
-from dotenv import load_dotenv
+def print_user_message(text: str) -> None:
+    print(f"[FOOD SERVICE] Received: {text}")
+
 load_dotenv()
 TOKEN = os.getenv("TOKEN")
 if not TOKEN:
-    raise RuntimeError("TELEGRAM_BOT_TOKEN is not set")
+    raise RuntimeError("TELEGRAM_BOT_TOKEN is not set") 
 
 # COMMANDS
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
