@@ -28,31 +28,33 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def customcommand(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("CUSTOM COMMAND")
 
-# MESSAGE HANDLER
-async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+def handle_respose(text: str, update: Update) -> str:
     text = update.message.text
     print_user_message(text)
     parsed = parse_food_input(text)
     if parsed is None:
-        await update.message.reply_text(
-            'Wrong format. Please use: "120g banana"'
-        )
-        return
+        return 'Wrong format. Please use: "120g banana"'
+    
     food_name = parsed["food"]
     amount = parsed["amount"]
     unit = parsed["unit"]
 
     macros = calculate_macros(food_name, amount, unit)
     if macros is None:
-        await update.message.reply_text(
+        update.message.reply_text(
             f"Could not find nutritional information for '{food_name}'."
         )
         return 
-    response = f"""You have entered: {amount}{unit} of {food_name}.
-        Calories: {macros['calories']}
-        Protein: {macros['protein']}
-        Carbs: {macros['carbs']}
-        Fat: {macros['fat']}"""
+    
+    return f"""{food_name.upper()} ({amount}{unit}):
+    - Calories: {round(macros['calories'], 2)}kcal
+    - Protein: {round(macros['protein'], 2)}g
+    - Carbohydrates: {round(macros['carbs'], 2)}g
+    - Fats: {round(macros['fat'], 2)}g
+    """
+
+async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    response = handle_respose(update.message.text, update)
     await update.message.reply_text(response)
 
 
