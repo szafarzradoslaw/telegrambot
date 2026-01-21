@@ -8,9 +8,8 @@
     [X] 1,5
 
 [X] simple food macros database
-[] food aliasis
-[] get lots of data
-[] proper database
+[]  SQL Database
+
 [X] calculating macros based on users input and food macros form database
 [X] if amount isnt provided asume one portion 
 
