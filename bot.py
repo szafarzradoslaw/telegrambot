@@ -25,28 +25,21 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("HELP")
 
-async def customcommand(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def custom_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("CUSTOM COMMAND")
 
-def handle_respose(text: str, update: Update) -> str:
+async def handle_response(update: Update) -> str:
     text = update.message.text
     print_user_message(text)
     parsed = parse_food_input(text)
     if parsed is None:
         return 'Wrong format. Please use: "120g banana"'
     
-    food_name = parsed["food"]
-    amount = parsed["amount"]
-    unit = parsed["unit"]
-
-    macros = calculate_macros(food_name, amount, unit)
+    macros = calculate_macros(parsed.name, parsed.amount, parsed.unit)
     if macros is None:
-        update.message.reply_text(
-            f"Could not find nutritional information for '{food_name}'."
-        )
-        return 
-    
-    return f"""{food_name.upper()} ({amount}{unit}):
+        return f"Could not find nutritional information for '{parsed.name}'."
+      
+    return f"""{parsed.name.upper()} ({parsed.amount}{parsed.unit}):
     - Calories: {round(macros['calories'], 2)}kcal
     - Protein: {round(macros['protein'], 2)}g
     - Carbohydrates: {round(macros['carbs'], 2)}g
@@ -54,7 +47,7 @@ def handle_respose(text: str, update: Update) -> str:
     """
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    response = handle_respose(update.message.text, update)
+    response = await handle_response(update)
     await update.message.reply_text(response)
 
 
@@ -64,7 +57,7 @@ if __name__ == "__main__":
     # Commands
     app.add_handler(CommandHandler("start", start_command))
     app.add_handler(CommandHandler("help", help_command))
-    app.add_handler(CommandHandler("customcommand", customcommand))
+    app.add_handler(CommandHandler("customcommand", custom_command))
 
     # Messages
     app.add_handler(
