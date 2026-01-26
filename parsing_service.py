@@ -1,6 +1,6 @@
 import re
 from dataclasses import dataclass
-
+from errors import FoodParsingError
 # "120.5g banana" or "120,5g banana"
 PATTERN_AMOUNT_UNIT_BEGINNING = re.compile(
     r"^(?P<amount>\d+(?:[.,]\d+)?)\s*(?P<unit>[a-zA-Z]+)\s+(?P<food>[a-zA-Z ]+)$"
@@ -48,8 +48,11 @@ def parse_food_input(user_input: str):
             unit="portion",
         )
 
-    return ParsedFood(
-        name=text,
-        amount=1,
-        unit="portion",
-    )
+    if len(parts) == 1:
+        return ParsedFood(
+            name=text,
+            amount=1,
+            unit="portion",
+        )
+
+    raise FoodParsingError(f"Unrecognized food input: '{user_input}'")
