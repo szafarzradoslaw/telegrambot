@@ -16,7 +16,7 @@ if not TOKEN:
     raise TelegramBotTokenError("TELEGRAM_BOT_TOKEN is not set") 
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    response = await handle_response(update, context)
+    response = await handle_response(update, )
     await update.message.reply_text(response)
 
 if __name__ == "__main__":
