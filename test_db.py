@@ -1,13 +1,20 @@
 from database import get_connection
 from food_repository import add_food, get_food_by_name
 
-food_id = add_food("Banana", 89, 1.1, 0.3, 23)
-print(f"Food added with ID: {food_id}")
 
-food = get_food_by_name("Banana")
-print("Retrieved food:", dict(food) if food else "Not found")
+def test_rows():
+    with get_connection() as conn:
+        rows = conn.execute("SELECT * FROM foods").fetchall()
+        for row in rows:
+            print(dict(row))
 
-with get_connection() as conn:
-    rows = conn.execute("SELECT * FROM foods").fetchall()
-    for row in rows:
-        print(dict(row))
+def test_columns():
+    with get_connection() as conn:
+        cursor = conn.execute("PRAGMA table_info(foods);")
+        for col in cursor.fetchall():
+            print(dict(col))
+
+if __name__ == "__main__":
+    test_rows()
+    #test_columns()
+    # ood_id = add_food("orange", 47, 0.9, 0.1, 11.8)

@@ -7,7 +7,7 @@ from telegram.ext import Application, CommandHandler, MessageHandler, filters, C
 
 from parsing_service import parse_food_input
 from food_service import calculate_macros
-from errors import TelegramBotTokenError, FoodParsingError, MacrosCalculationError, FoodNotFoundError, UnitConversionError
+from errors import TelegramBotTokenError, FoodParsingError, FoodNotFoundError, UnitConversionError
 
 BOT_USERNAME: Final = "@szafarzbot"
 load_dotenv()
@@ -39,12 +39,11 @@ async def handle_response(update: Update) -> str:
     
     try:
         macros = calculate_macros(parsed.name, parsed.amount, parsed.unit)
-    except FoodNotFoundError:
-        return f"Could not {parsed.name} in database."
-    except UnitConversionError:
-        return f"Unit '{parsed.unit}' not recognized."
+    except FoodNotFoundError as error:
+        return f"Error: {error}"
+    except UnitConversionError as error:
+        return f"Error: {error}"
     
-
     return f"""{parsed.name.upper()} ({parsed.amount}{parsed.unit}):
     - Calories: {round(macros['calories'], 2)}kcal
     - Protein: {round(macros['protein'], 2)}g
@@ -55,7 +54,6 @@ async def handle_response(update: Update) -> str:
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     response = await handle_response(update)
     await update.message.reply_text(response)
-
 
 if __name__ == "__main__":
     app = Application.builder().token(TOKEN).build()

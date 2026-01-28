@@ -14,7 +14,9 @@ def init_db():
                 calories_per_100g REAL NOT NULL,
                 protein_per_100g REAL NOT NULL,
                 fat_per_100g REAL NOT NULL,
-                carbs_per_100g REAL NOT NULL
+                carbs_per_100g REAL NOT NULL,
+                gram_per_portion REAL
+                
             )
         """)
         print("Database initialized and foods table created successfully.")

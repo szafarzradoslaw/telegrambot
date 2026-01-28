@@ -17,13 +17,13 @@ class ParsedFood:
     amount: float
     unit: str
 
-def is_number(s: str) -> bool:
-    return bool(re.fullmatch(r"\d+(?:\.\d+)?", s))
-
+def is_number(value: str) -> bool:
+    return bool(re.fullmatch(r"\d+(?:\.\d+)?", value))
 
 def parse_food_input(user_input: str):
     text = user_input.strip().lower()
     text = text.replace(",", ".")  # normalize decimal separator
+
     for pattern in (PATTERN_AMOUNT_UNIT_BEGINNING, PATTERN_AMOUNT_UNIT_ENDING):
             match = pattern.match(text)
             if match:
@@ -41,6 +41,7 @@ def parse_food_input(user_input: str):
             amount=float(parts[0]),
             unit="portion",
         )
+    
     if len(parts) == 2 and is_number(parts[1]):
         return ParsedFood(
             name=parts[0],
