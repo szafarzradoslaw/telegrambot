@@ -44,6 +44,3 @@ def get_food_by_name(name: str) -> Food | None:
             raise FoodNotFoundError(f"Food '{name}' not found in database.")
 
         return Food(**dict(row))
-    
-if __name__ == "__main__":
-    print(get_food_by_name("Banana"))
